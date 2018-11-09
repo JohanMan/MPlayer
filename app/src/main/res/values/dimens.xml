@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="text_size_title">20sp</dimen>
+    <dimen name="text_size_content">18sp</dimen>
+    <dimen name="text_size_tip">16sp</dimen>
+    <dimen name="text_size_hint">14sp</dimen>
+
+    <dimen name="empty_img_width">180dp</dimen>
+    <dimen name="empty_img_text_space">20dp</dimen>
+
+    <dimen name="layout_margin">16dp</dimen>
+    <dimen name="layout_space">10dp</dimen>
+
+    <dimen name="video_item_image_width">80dp</dimen>
+    <dimen name="video_item_image_height">60dp</dimen>
+
+</resources>

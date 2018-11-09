@@ -1,0 +1,1 @@
+include ':app', ':ijkplayer-java', ':view-finder', ':view-finder-annotation', ':view-finder-processor', ':data', ':async-task', ':core', ':utils'
