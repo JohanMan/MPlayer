@@ -24,7 +24,7 @@ import tv.danmaku.ijk.media.player.IjkTimedText;
  * See {@link IjkMediaPlayer#setSurface(Surface)}
  */
 
-public class VideoView extends FrameLayout implements MediaController.MediaPlayerControl, RenderCallback {
+public class VideoView extends FrameLayout implements IVideoPlayer, RenderCallback {
 
     private static final int STATE_ERROR = -1;
     private static final int STATE_IDLE = 0;
@@ -39,6 +39,7 @@ public class VideoView extends FrameLayout implements MediaController.MediaPlaye
     private static final String ERROR_UNABLE_OPEN_DESCRIBE = "Unable to open content : %s";
 
     private Context appContext;
+    private IMediaController mediaController;
     private IMediaPlayer mediaPlayer;
     private IRenderView renderView;
     private Surface surface;
@@ -67,7 +68,7 @@ public class VideoView extends FrameLayout implements MediaController.MediaPlaye
     }
 
     private void initRenderView() {
-        renderView = new SurfaceRenderViewView(getContext());
+        renderView = new TextureRenderViewView(getContext());
         renderView.setRenderCallback(this);
         FrameLayout.LayoutParams renderLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         renderLayoutParams.gravity = Gravity.CENTER;
@@ -82,6 +83,12 @@ public class VideoView extends FrameLayout implements MediaController.MediaPlaye
         subtitleLayoutParams.gravity = Gravity.BOTTOM;
         subtitleLayoutParams.bottomMargin = 24;
         addView(subtitleView, subtitleLayoutParams);
+    }
+
+    private void attachMediaController() {
+        if (mediaController == null) return;
+        FrameLayout.LayoutParams controllerLayoutParams = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        addView(mediaController.getMediaControllerView(), controllerLayoutParams);
     }
 
     private void initMediaPlayer() {
@@ -107,6 +114,7 @@ public class VideoView extends FrameLayout implements MediaController.MediaPlaye
             mediaPlayer.prepareAsync();
             currentState = STATE_PREPARING;
             bufferPercent = 0;
+            mediaController.setEnabled(false);
         } catch (IOException exception) {
             exception.printStackTrace();
             currentState = STATE_ERROR;
@@ -121,6 +129,8 @@ public class VideoView extends FrameLayout implements MediaController.MediaPlaye
         }
         mediaPlayer.release();
         mediaPlayer = null;
+        AudioManager audioManager = (AudioManager) appContext.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.abandonAudioFocus(null);
     }
 
     /**
@@ -135,7 +145,8 @@ public class VideoView extends FrameLayout implements MediaController.MediaPlaye
             if (seekPosition != 0) {
                 player.seekTo(seekPosition);
             }
-            player.start();
+            start();
+            mediaController.setEnabled(true);
         }
     };
 
@@ -237,7 +248,7 @@ public class VideoView extends FrameLayout implements MediaController.MediaPlaye
     }
 
     /**
-     * ==============================  MediaController.MediaPlayerControl  ==============================
+     * ==============================  IVideoPlayer  ==============================
      */
 
     @Override
@@ -312,6 +323,18 @@ public class VideoView extends FrameLayout implements MediaController.MediaPlaye
     }
 
     @Override
+    public boolean canSetSpeed() {
+        return true;
+    }
+
+    @Override
+    public void setSpeed(float speed) {
+        if (mediaPlayer != null && mediaPlayer instanceof IjkMediaPlayer) {
+            ((IjkMediaPlayer) mediaPlayer).setSpeed(speed);
+        }
+    }
+
+    @Override
     public boolean canPause() {
         return true;
     }
@@ -348,6 +371,7 @@ public class VideoView extends FrameLayout implements MediaController.MediaPlaye
      */
     public void setVideoPath(String videoPath) {
         this.videoPath = videoPath;
+        releaseMediaPlayer();
     }
 
     /**
@@ -355,7 +379,17 @@ public class VideoView extends FrameLayout implements MediaController.MediaPlaye
      * @param rotation
      */
     public void setVideoRotation(int rotation) {
-        this.renderView.getView().setRotation(rotation);
+        this.renderView.setVideoRotation(rotation);
+    }
+
+    /**
+     * 设置视频控制器
+     * @param mediaController
+     */
+    public void setMediaController(IMediaController mediaController) {
+        this.mediaController = mediaController;
+        this.mediaController.setVideoPlayer(this);
+        attachMediaController();
     }
 
     /**
@@ -363,6 +397,13 @@ public class VideoView extends FrameLayout implements MediaController.MediaPlaye
      */
     public void play() {
         initMediaPlayer();
+    }
+
+    /**
+     * 释放
+     */
+    public void release() {
+        releaseMediaPlayer();
     }
 
 }

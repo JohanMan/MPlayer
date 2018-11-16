@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.text.TextUtils;
 
+import java.util.HashMap;
+
 /**
  * Created by johan on 2018/11/9.
  */
@@ -19,7 +21,11 @@ public class VideoUtil {
         Bitmap bitmap = null;
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         try {
-            retriever.setDataSource(videoPath);
+            if (videoPath.startsWith("http://")) {
+                retriever.setDataSource(videoPath, new HashMap<String, String>());
+            } else {
+                retriever.setDataSource(videoPath);
+            }
             bitmap = retriever.getFrameAtTime();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -46,7 +52,11 @@ public class VideoUtil {
         int width = 0;
         int height = 0;
         try {
-            retriever.setDataSource(videoPath);
+            if (videoPath.startsWith("http://")) {
+                retriever.setDataSource(videoPath, new HashMap<String, String>());
+            } else {
+                retriever.setDataSource(videoPath);
+            }
             String rotationString = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
             String widthString = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
             String heightString = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
@@ -96,15 +106,6 @@ public class VideoUtil {
 
         public int getHeight() {
             return height;
-        }
-
-        @Override
-        public String toString() {
-            return "VideoMediaMetadata{" +
-                    "rotation=" + rotation +
-                    ", width=" + width +
-                    ", height=" + height +
-                    '}';
         }
 
     }

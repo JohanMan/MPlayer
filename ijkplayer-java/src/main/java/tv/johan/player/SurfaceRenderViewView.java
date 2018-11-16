@@ -13,59 +13,25 @@ import android.view.View;
 
 public class SurfaceRenderViewView extends SurfaceView  implements IRenderView, SurfaceHolder.Callback {
 
-    private int videoWidth;
-    private int videoHeight;
+    private RenderMeasureHelper measureHelper;
     private RenderCallback renderCallback;
 
     public SurfaceRenderViewView(Context context) {
         super(context);
         getHolder().addCallback(this);
+        measureHelper = new RenderMeasureHelper();
     }
 
     public SurfaceRenderViewView(Context context, AttributeSet attrs) {
         super(context, attrs);
         getHolder().addCallback(this);
+        measureHelper = new RenderMeasureHelper();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (videoWidth == 0 || videoHeight == 0) {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-            return;
-        }
-        int widthSpecMode = View.MeasureSpec.getMode(widthMeasureSpec);
-        int widthSpecSize = View.MeasureSpec.getSize(widthMeasureSpec);
-        int heightSpecMode = View.MeasureSpec.getMode(heightMeasureSpec);
-        int heightSpecSize = View.MeasureSpec.getSize(heightMeasureSpec);
-        int width, height;
-        if (widthSpecMode == View.MeasureSpec.EXACTLY && heightSpecMode == View.MeasureSpec.EXACTLY) {
-            width = widthSpecSize;
-            height = heightSpecSize;
-        } else if (widthSpecMode == View.MeasureSpec.EXACTLY && heightSpecMode == MeasureSpec.AT_MOST) {
-            width = widthSpecSize;
-            height = width * videoHeight / videoWidth;
-            if (height > heightSpecSize) {
-                height = heightSpecSize;
-            }
-        } else if (widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == View.MeasureSpec.EXACTLY) {
-            height = heightSpecSize;
-            width = height * videoWidth / videoHeight;
-            if (width > widthSpecSize) {
-                width = widthSpecSize;
-            }
-        } else {
-            width = videoWidth;
-            height = videoHeight;
-            if (height < heightSpecSize) {
-                height = heightSpecSize;
-                width = height * videoWidth / videoHeight;
-            }
-            if (width > widthSpecSize) {
-                width = widthSpecSize;
-                height = width * videoHeight / videoWidth;
-            }
-        }
-        setMeasuredDimension(width, height);
+        measureHelper.measure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(measureHelper.getWidthMeasureSpec(), measureHelper.getHeightMeasureSpec());
     }
 
     @Override
@@ -108,9 +74,29 @@ public class SurfaceRenderViewView extends SurfaceView  implements IRenderView, 
      */
     @Override
     public void setVideoSize(int videoWidth, int videoHeight) {
-        this.videoWidth = videoWidth;
-        this.videoHeight = videoHeight;
         getHolder().setFixedSize(videoWidth, videoHeight);
+        measureHelper.setVideoSize(videoWidth, videoHeight);
+        requestLayout();
+    }
+
+    /**
+     * 设置视频的角度
+     * SurfaceView 设置角度无效
+     * @param videoRotation
+     */
+    @Deprecated
+    @Override
+    public void setVideoRotation(int videoRotation) {
+
+    }
+
+    /**
+     * 设置高宽比
+     * @param aspectRatio
+     */
+    @Override
+    public void setAspectRatio(int aspectRatio) {
+        measureHelper.setAspectRatio(aspectRatio);
         requestLayout();
     }
 

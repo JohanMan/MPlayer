@@ -1,4 +1,4 @@
-package com.johan.utils;
+package tv.johan.player;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

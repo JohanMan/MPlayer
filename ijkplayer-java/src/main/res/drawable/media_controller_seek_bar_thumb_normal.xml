@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+
+    <size android:width="@dimen/media_controller_seek_bar_thumb_size" android:height="@dimen/media_controller_seek_bar_thumb_size" />
+
+    <solid android:color="#ffffff" />
+
+    <stroke android:color="#00000000" android:width="@dimen/media_controller_seek_bar_thumb_width" />
+
+</shape>

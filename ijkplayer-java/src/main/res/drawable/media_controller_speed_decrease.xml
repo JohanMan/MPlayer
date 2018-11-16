@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <corners android:topLeftRadius="@dimen/media_controller_speed_padding" android:bottomLeftRadius="@dimen/media_controller_speed_padding" />
+
+    <solid android:color="#33000000" />
+
+</shape>

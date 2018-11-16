@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="media_controller_padding">12dp</dimen>
+    <dimen name="media_controller_space">12dp</dimen>
+    <dimen name="media_controller_name_text">18sp</dimen>
+    <dimen name="media_controller_time_text">14sp</dimen>
+    <dimen name="media_controller_tip_text">24sp</dimen>
+    <dimen name="media_controller_speed_space">6dp</dimen>
+    <dimen name="media_controller_speed_text">12sp</dimen>
+    <dimen name="media_controller_speed_padding">8dp</dimen>
+    <dimen name="media_controller_seek_bar_height">2dp</dimen>
+    <dimen name="media_controller_seek_bar_left_right">8dp</dimen>
+    <dimen name="media_controller_seek_bar_thumb_size">16dp</dimen>
+    <dimen name="media_controller_seek_bar_thumb_width">8dp</dimen>
+    <dimen name="media_controller_icon_size">36dp</dimen>
+
+</resources>

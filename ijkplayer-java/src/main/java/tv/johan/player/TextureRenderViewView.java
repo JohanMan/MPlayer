@@ -14,57 +14,25 @@ import android.view.View;
 public class TextureRenderViewView extends TextureView implements IRenderView, TextureView.SurfaceTextureListener {
 
     private Surface surface;
-    private int videoWidth;
-    private int videoHeight;
+    private RenderMeasureHelper measureHelper;
     private RenderCallback renderCallback;
 
     public TextureRenderViewView(Context context) {
         super(context);
+        setSurfaceTextureListener(this);
+        measureHelper = new RenderMeasureHelper();
     }
 
     public TextureRenderViewView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setSurfaceTextureListener(this);
+        measureHelper = new RenderMeasureHelper();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (videoWidth == 0 || videoHeight == 0) {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-            return;
-        }
-        int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
-        int width, height;
-        if (widthSpecMode == MeasureSpec.EXACTLY && heightSpecMode == MeasureSpec.EXACTLY) {
-            width = widthSpecSize;
-            height = heightSpecSize;
-        } else if (widthSpecMode == MeasureSpec.EXACTLY && heightSpecMode == MeasureSpec.AT_MOST) {
-            width = widthSpecSize;
-            height = width * videoHeight / videoWidth;
-            if (height > heightSpecSize) {
-                height = heightSpecSize;
-            }
-        } else if (widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.EXACTLY) {
-            height = heightSpecSize;
-            width = height * videoWidth / videoHeight;
-            if (width > widthSpecSize) {
-                width = widthSpecSize;
-            }
-        } else {
-            width = videoWidth;
-            height = videoHeight;
-            if (height < heightSpecSize) {
-                height = heightSpecSize;
-                width = height * videoWidth / videoHeight;
-            }
-            if (width > widthSpecSize) {
-                width = widthSpecSize;
-                height = width * videoHeight / videoWidth;
-            }
-        }
-        setMeasuredDimension(width, height);
+        measureHelper.measure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(measureHelper.getWidthMeasureSpec(), measureHelper.getHeightMeasureSpec());
     }
 
     @Override
@@ -116,8 +84,28 @@ public class TextureRenderViewView extends TextureView implements IRenderView, T
      */
     @Override
     public void setVideoSize(int videoWidth, int videoHeight) {
-        this.videoWidth = videoWidth;
-        this.videoHeight = videoHeight;
+        measureHelper.setVideoSize(videoWidth, videoHeight);
+        requestLayout();
+    }
+
+    /**
+     * 设置视频的角度
+     * @param videoRotation
+     */
+    @Override
+    public void setVideoRotation(int videoRotation) {
+        setRotation(videoRotation);
+        measureHelper.setVideoRotation(videoRotation);
+        requestLayout();
+    }
+
+    /**
+     * 设置高宽比
+     * @param aspectRatio
+     */
+    @Override
+    public void setAspectRatio(int aspectRatio) {
+        measureHelper.setAspectRatio(aspectRatio);
         requestLayout();
     }
 

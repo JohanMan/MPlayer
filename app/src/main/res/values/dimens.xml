@@ -14,5 +14,8 @@
 
     <dimen name="video_item_image_width">80dp</dimen>
     <dimen name="video_item_image_height">60dp</dimen>
+    <dimen name="video_item_image_round">5dp</dimen>
+
+    <dimen name="video_record_size">65dp</dimen>
 
 </resources>

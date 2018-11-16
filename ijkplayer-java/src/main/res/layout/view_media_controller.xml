@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/media_controller_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/media_controller_padding"
+        android:background="@drawable/media_controller_top_background"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/media_controller_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_back"
+            />
+        
+        <TextView
+            android:id="@+id/media_controller_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/media_controller_space"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/media_controller_name_text"
+            android:text="视频名称"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/media_controller_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/media_controller_padding"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/media_controller_bottom_background"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/media_controller_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_play_stop"
+            />
+
+        <ImageView
+            android:id="@+id/media_controller_play_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/media_controller_space"
+            android:src="@drawable/img_play_next"
+            />
+
+        <TextView
+            android:id="@+id/media_controller_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/media_controller_space"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/media_controller_time_text"
+            android:text="00:00/00:00"
+            />
+
+        <TextView
+            android:id="@+id/media_controller_speed_decrease"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/media_controller_speed_padding"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/media_controller_speed_text"
+            android:text="－"
+            android:background="@drawable/media_controller_speed_decrease"
+            />
+
+        <TextView
+            android:id="@+id/media_controller_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/media_controller_speed_padding"
+            android:layout_marginLeft="@dimen/media_controller_speed_space"
+            android:layout_marginRight="@dimen/media_controller_speed_space"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/media_controller_speed_text"
+            android:text="1.0 倍速"
+            android:background="@drawable/media_controller_speed"
+            />
+
+        <TextView
+            android:id="@+id/media_controller_speed_increase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/media_controller_speed_padding"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/media_controller_speed_text"
+            android:text="＋"
+            android:background="@drawable/media_controller_speed_increase"
+            />
+
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/media_controller_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/media_controller_seek_bar_left_right"
+        android:paddingEnd="@dimen/media_controller_seek_bar_left_right"
+        android:layout_marginLeft="@dimen/media_controller_padding"
+        android:layout_marginRight="@dimen/media_controller_padding"
+        style="@style/MediaControllerSeekBar"
+        android:layout_above="@id/media_controller_bottom"
+        />
+
+    <ImageView
+        android:id="@+id/media_controller_rotation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/media_controller_padding"
+        android:src="@drawable/img_rotate"
+        />
+
+    <LinearLayout
+        android:id="@+id/media_controller_tip_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/media_controller_padding"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal"
+        android:background="@drawable/media_controller_tip_background"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:id="@+id/media_controller_tip_icon"
+            android:layout_width="@dimen/media_controller_icon_size"
+            android:layout_height="@dimen/media_controller_icon_size"
+            android:layout_marginRight="@dimen/media_controller_space"
+            android:src="@drawable/icon_bright"
+            />
+
+        <TextView
+            android:id="@+id/media_controller_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/media_controller_tip_text"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -15,7 +15,6 @@
             android:id="@+id/list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/layout_space"
             />
 
         <LinearLayout
@@ -46,6 +45,15 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/record_button"
+            android:layout_width="@dimen/video_record_size"
+            android:layout_height="@dimen/video_record_size"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/layout_margin"
+            android:src="@drawable/img_record"
+            />
 
     </RelativeLayout>
 

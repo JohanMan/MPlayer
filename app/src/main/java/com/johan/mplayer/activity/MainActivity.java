@@ -4,6 +4,7 @@ import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +18,6 @@ import com.johan.mplayer.R;
 import com.johan.mplayer.adapter.BaseAdapter;
 import com.johan.mplayer.adapter.VideoAdapter;
 import com.johan.mplayer.helper.PermissionHelper;
-import com.johan.mplayer.view.EmptyItemDecoration;
 import com.johan.view.finder.AutoFind;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import java.util.List;
 public class MainActivity extends BaseActivity <MainViewFinder> implements PermissionHelper.OnPermissionCallback {
 
     private VideoCore videoCore;
-    private List<Video> videoList;
+    private ArrayList<Video> videoList;
     private VideoAdapter videoAdapter;
 
     @Override
@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity <MainViewFinder> implements Permi
         initToolbar();
         initCore();
         initView();
-        PermissionHelper.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, this);
+        PermissionHelper.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, this);
     }
 
     /**
@@ -64,12 +64,11 @@ public class MainActivity extends BaseActivity <MainViewFinder> implements Permi
         videoAdapter.setOnRecyclerViewItemClickListener(new BaseAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                VideoActivity.startActivity(MainActivity.this, videoList.get(position));
+                VideoActivity.playLocalVideo(MainActivity.this, videoList, position);
             }
         });
         finder.listView.setLayoutManager(new LinearLayoutManager(this));
-        int dividerHeight = getResources().getDimensionPixelOffset(R.dimen.layout_space);
-        finder.listView.addItemDecoration(new EmptyItemDecoration(dividerHeight));
+        finder.listView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         finder.listView.setAdapter(videoAdapter);
     }
 
@@ -122,6 +121,12 @@ public class MainActivity extends BaseActivity <MainViewFinder> implements Permi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_online :
+                VideoActivity.playOnlineVideo(this, "http://vjs.zencdn.net/v/oceans.mp4", "oceans");
+                break;
+            case R.id.action_live :
+                VideoActivity.playLiveVideo(this, "http://223.110.243.149/PLTV/3/224/3221227166/index.m3u8", "CCTV 5");
+                break;
             case R.id.action_sort :
                 break;
             case R.id.action_setting :

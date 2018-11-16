@@ -8,9 +8,20 @@ import android.view.View;
 
 public interface IRenderView {
 
+    // 适屏 (不会剪切)
+    int AR_FIT_PARENT = 1;
+    // 宽屏 (宽占满 可能剪切)
+    int AR_WIDTH_PARENT = 2;
+    // 高屏 (高占满 可能剪切)
+    int AR_HEIGHT_PARENT = 3;
+
     void setRenderCallback(RenderCallback callback);
 
-    void setVideoSize(int width, int height);
+    void setVideoSize(int videoWidth, int videoHeight);
+
+    void setVideoRotation(int videoRotation);
+
+    void setAspectRatio(int aspectRatio);
 
     View getView();
 
